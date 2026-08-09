@@ -1,0 +1,28 @@
+{
+  "name": "what-can-i-cook",
+  "version": "1.0.0",
+  "description": "Turn what you already have into what you want to eat - Production AI Kitchen Platform",
+  "main": "server/server.js",
+  "scripts": {
+    "dev": "concurrently \"npm run server\" \"npm run client\"",
+    "server": "cd server && npm run dev",
+    "client": "cd client && npm run dev",
+    "install:all": "npm install && cd server && npm install && cd ../client && npm install",
+    "build": "cd client && npm run build",
+    "start": "cd server && npm start",
+    "seed": "cd server && npm run seed"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "keywords": [
+    "ai",
+    "recipe",
+    "kitchen",
+    "food-waste",
+    "fridge-scanner",
+    "meal-planner"
+  ],
+  "author": "Antigravity",
+  "license": "MIT"
+}

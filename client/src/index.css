@@ -1,0 +1,76 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    --bg-primary: #FAFAF5;
+    --card-bg: #FFFFFF;
+    --text-main: #172019;
+    --text-muted: #6B746D;
+    --brand-primary: #2F7D4A;
+    --brand-dark: #205C36;
+    --brand-accent: #F3B562;
+    --status-warning: #E5A72B;
+    --status-danger: #D9534F;
+  }
+
+  .dark {
+    --bg-primary: #0F1411;
+    --card-bg: #172019;
+    --text-main: #F1F5F9;
+    --text-muted: #94A3B8;
+  }
+
+  body {
+    background-color: var(--bg-primary);
+    color: var(--text-main);
+    font-family: 'Plus Jakarta Sans', 'Inter', sans-serif;
+  }
+}
+
+/* Glassmorphism & Custom Cards */
+.glass-panel {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(47, 125, 74, 0.1);
+}
+
+.dark .glass-panel {
+  background: rgba(23, 32, 25, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Custom Scrollbars */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #CBD5E1;
+  border-radius: 9999px;
+}
+.dark ::-webkit-scrollbar-thumb {
+  background: #334155;
+}
+
+/* Scanning Pulse Radar Animation */
+@keyframes scanLine {
+  0% { top: 0%; opacity: 0.8; }
+  50% { opacity: 1; }
+  100% { top: 100%; opacity: 0.8; }
+}
+
+.animate-scan-line {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 4px;
+  background: linear-gradient(90deg, transparent, #2F7D4A, #F3B562, #2F7D4A, transparent);
+  box-shadow: 0 0 15px #2F7D4A;
+  animation: scanLine 3s infinite ease-in-out;
+}

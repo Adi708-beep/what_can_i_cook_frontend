@@ -1,5 +1,10 @@
 {
   "outputDirectory": "client/dist",
+  "functions": {
+    "api/index.js": {
+      "includeFiles": "server/**"
+    }
+  },
   "rewrites": [
     {
       "source": "/api/(.*)",

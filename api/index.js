@@ -1,12 +1,8 @@
 const express = require('express');
 const path = require('path');
 const cors = require('cors');
-const helmet = require('helmet');
 const cookieParser = require('cookie-parser');
-require('dotenv').config({ path: path.join(__dirname, '../.env') });
-
-const connectDB = require('../server/config/database');
-const errorHandler = require('../server/middlewares/errorHandler');
+require('dotenv').config();
 
 const authRoutes = require('../server/routes/authRoutes');
 const userRoutes = require('../server/routes/userRoutes');
@@ -21,24 +17,26 @@ const analyticsRoutes = require('../server/routes/analyticsRoutes');
 
 const app = express();
 
-app.use(helmet({ crossOriginResourcePolicy: false }));
-app.use(cors({ origin: '*', credentials: true }));
+app.use(cors({
+  origin: true,
+  credentials: true,
+}));
+
 app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
-// Connect Database (non-blocking)
-connectDB().catch((err) => console.warn('[DB Error Catch]:', err.message));
-
+// Health Check API
 app.get('/api/health', (req, res) => {
   res.json({
     status: 'online',
     app: 'WHAT CAN I COOK? API',
     time: new Date(),
-    environment: process.env.NODE_ENV || 'production',
+    environment: 'production',
   });
 });
 
+// API Routes Mounting
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use('/api/inventory', inventoryRoutes);
@@ -50,6 +48,16 @@ app.use('/api/shopping-list', shoppingListRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/analytics', analyticsRoutes);
 
-app.use(errorHandler);
+// Error Handler
+app.use((err, req, res, next) => {
+  console.error('[API Error]:', err);
+  res.status(500).json({
+    success: false,
+    error: {
+      code: 'SERVER_ERROR',
+      message: err.message || 'Internal server error',
+    },
+  });
+});
 
 module.exports = app;

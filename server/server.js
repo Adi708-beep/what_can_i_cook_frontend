@@ -5,7 +5,7 @@ const helmet = require('helmet');
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const rateLimit = require('express-rate-limit');
-require('dotenv').config();
+require('dotenv').config({ path: path.join(__dirname, '../.env') });
 
 const connectDB = require('./config/database');
 const errorHandler = require('./middlewares/errorHandler');
@@ -33,14 +33,14 @@ app.use(helmet({
 }));
 
 app.use(cors({
-  origin: process.env.CLIENT_URL || 'http://localhost:5173',
+  origin: process.env.CLIENT_URL || '*',
   credentials: true,
 }));
 
 // Rate Limiting
 const limiter = rateLimit({
   windowMs: 15 * 60 * 1000, // 15 minutes
-  max: 300, // Limit each IP to 300 requests per window
+  max: 300,
   standardHeaders: true,
   legacyHeaders: false,
 });
@@ -80,10 +80,14 @@ app.use('/api/analytics', analyticsRoutes);
 // Centralized Error Handling Middleware
 app.use(errorHandler);
 
-const PORT = process.env.PORT || 5000;
-app.listen(PORT, () => {
-  console.log(`\n======================================================`);
-  console.log(`🚀  WHAT CAN I COOK? SERVER RUNNING ON PORT ${PORT}`);
-  console.log(`📡  API URL: http://localhost:${PORT}/api/health`);
-  console.log(`======================================================\n`);
-});
+if (require.main === module) {
+  const PORT = process.env.PORT || 5000;
+  app.listen(PORT, () => {
+    console.log(`\n======================================================`);
+    console.log(`🚀  WHAT CAN I COOK? SERVER RUNNING ON PORT ${PORT}`);
+    console.log(`📡  API URL: http://localhost:${PORT}/api/health`);
+    console.log(`======================================================\n`);
+  });
+}
+
+module.exports = app;

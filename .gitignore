@@ -11,3 +11,5 @@ dist/
 build/
 uploads/
 .DS_Store
+
+.vercel
